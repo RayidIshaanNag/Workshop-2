@@ -5,85 +5,280 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather App</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: white;
-      text-align: center;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
     .container {
-      margin-top: 100px;
+      max-width: 800px;
+      margin: 0 auto;
     }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 300;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+    }
+
     input {
-      padding: 10px;
+      padding: 10px 15px;
       border: none;
       border-radius: 5px;
       width: 200px;
+      font-size: 14px;
     }
+
     button {
-      padding: 10px 15px;
+      padding: 10px 20px;
       border: none;
       border-radius: 5px;
       background-color: #fff;
       color: #333;
       cursor: pointer;
-      margin-left: 5px;
+      font-weight: 600;
+      transition: background-color 0.3s;
     }
-    .weather-box {
+
+    button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .weather-main {
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+      border-radius: 20px;
+      padding: 50px;
+      text-align: center;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .weather-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .city-info {
+      margin-bottom: 20px;
+    }
+
+    .city-name {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .city-state {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .temperature {
+      font-size: 72px;
+      font-weight: 300;
+      margin: 20px 0;
+    }
+
+    .weather-desc {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .weather-details {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
       margin-top: 20px;
-      padding: 20px;
+      font-size: 14px;
+    }
+
+    .detail-item {
+      opacity: 0.8;
+    }
+
+    .forecast {
+      margin-top: 30px;
+    }
+
+    .forecast h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      opacity: 0.9;
+    }
+
+    .forecast-container {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .forecast-item {
+      background: rgba(255,255,255,0.1);
       border-radius: 10px;
-      background: rgba(255,255,255,0.2);
-      display: inline-block;
+      padding: 15px 20px;
+      min-width: 120px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .forecast-day {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 10px;
+    }
+
+    .forecast-icon {
+      font-size: 32px;
+      margin: 10px 0;
+    }
+
+    .forecast-temp {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .forecast-condition {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>Weather App</h1>
-    <input type="text" id="city" placeholder="Enter city name">
-    <button onclick="getWeather()">Search</button>
+    <div class="header">
+      <h1>Weather</h1>
+      <div class="search-box">
+        <input type="text" id="city" placeholder="Enter city name">
+        <button onclick="getWeather()">Search</button>
+      </div>
+    </div>
 
-    <div class="weather-box" id="weather" style="display:none;">
-      <h2 id="cityName"></h2>
-      <p id="temp"></p>
-      <p id="desc"></p>
-      <p id="humidity"></p>
+    <div class="weather-main" id="weather">
+      <div class="weather-icon" id="weatherIcon">☁️</div>
+      
+      <div class="city-info">
+        <div class="city-name" id="cityName">Kolkata, WB</div>
+        <div class="city-state" id="timestamp">Updated just now</div>
+      </div>
+
+      <div class="temperature" id="temp">37°</div>
+      
+      <div class="weather-desc" id="desc">Partly cloudy</div>
+      
+      <div class="weather-details">
+        <div class="detail-item">
+          <div>Feels Like</div>
+          <div id="feelsLike">38°C</div>
+        </div>
+        <div class="detail-item">
+          <div>Humidity</div>
+          <div id="humidity">65%</div>
+        </div>
+        <div class="detail-item">
+          <div>Wind</div>
+          <div id="wind">12 km/h</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="forecast">
+      <h3>Daily</h3>
+      <div class="forecast-container" id="forecastContainer">
+        <!-- Forecast items will be added here -->
+      </div>
     </div>
   </div>
 
   <script>
-    const apiKey = "YOUR_API_KEY_HERE"; // Replace with your OpenWeatherMap API key
+    // Mock weather data
+    const mockWeatherData = {
+      'Kolkata': {
+        cityName: 'Kolkata',
+        state: 'WB',
+        temp: 37,
+        feelsLike: 38,
+        desc: 'Partly cloudy',
+        humidity: 65,
+        wind: 12,
+        icon: '☁️',
+        forecast: [
+          { day: 'May 22', high: 37, low: 28, condition: 'Sunny', icon: '☀️' },
+          { day: 'May 23', high: 36, low: 27, condition: 'Cloudy', icon: '☁️' },
+          { day: 'May 24', high: 32, low: 25, condition: 'Rainy', icon: '🌧️' },
+          { day: 'May 25', high: 36, low: 26, condition: 'Partly Cloudy', icon: '⛅' },
+          { day: 'May 26', high: 38, low: 28, condition: 'Sunny', icon: '☀️' }
+        ]
+      }
+    };
 
-    async function getWeather() {
-      const city = document.getElementById("city").value;
-      if (!city) return alert("Enter a city name");
+    function displayWeather(cityData) {
+      document.getElementById("cityName").innerText = `${cityData.cityName}, ${cityData.state}`;
+      document.getElementById("temp").innerText = `${cityData.temp}°`;
+      document.getElementById("desc").innerText = cityData.desc;
+      document.getElementById("humidity").innerText = `${cityData.humidity}%`;
+      document.getElementById("wind").innerText = `${cityData.wind} km/h`;
+      document.getElementById("feelsLike").innerText = `${cityData.feelsLike}°C`;
+      document.getElementById("weatherIcon").innerText = cityData.icon;
 
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+      // Display forecast
+      const forecastContainer = document.getElementById("forecastContainer");
+      forecastContainer.innerHTML = '';
+      
+      cityData.forecast.forEach(day => {
+        const forecastItem = document.createElement('div');
+        forecastItem.className = 'forecast-item';
+        forecastItem.innerHTML = `
+          <div class="forecast-day">${day.day}</div>
+          <div class="forecast-icon">${day.icon}</div>
+          <div class="forecast-temp">${day.high}° / ${day.low}°</div>
+          <div class="forecast-condition">${day.condition}</div>
+        `;
+        forecastContainer.appendChild(forecastItem);
+      });
+    }
 
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
+    function getWeather() {
+      const cityInput = document.getElementById("city").value.trim();
+      const city = cityInput || 'Kolkata';
 
-        if (data.cod !== 200) {
-          alert("City not found");
-          return;
-        }
-
-        document.getElementById("weather").style.display = "block";
-        document.getElementById("cityName").innerText = data.name;
-        document.getElementById("temp").innerText = `Temperature: ${data.main.temp} °C`;
-        document.getElementById("desc").innerText = `Weather: ${data.weather[0].description}`;
-        document.getElementById("humidity").innerText = `Humidity: ${data.main.humidity}%`;
-
-      } catch (err) {
-        alert("Error fetching data");
-        console.error(err);
+      if (mockWeatherData[city]) {
+        displayWeather(mockWeatherData[city]);
+      } else {
+        alert("City not found in mock data. Available: Kolkata");
+        // Still show Kolkata as default
+        displayWeather(mockWeatherData['Kolkata']);
       }
     }
+
+    // Load default weather on page load
+    window.addEventListener('load', function() {
+      getWeather();
+    });
   </script>
 
 </body>
